@@ -1,4 +1,4 @@
-package com.salhe.antibigdata.activity
+package com.salhe.antibigdata.ui.activity
 
 import android.os.Bundle
 import android.view.View
@@ -12,10 +12,10 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.salhe.antibigdata.Key
 import com.salhe.antibigdata.R
-import com.salhe.antibigdata.adapter.ProductAdapter
-import com.salhe.antibigdata.dao.ProductsDao
-import com.salhe.antibigdata.pojo.DataState
-import com.salhe.antibigdata.pojo.Product
+import com.salhe.antibigdata.data.dao.ProductsDao
+import com.salhe.antibigdata.data.pojo.DataState
+import com.salhe.antibigdata.data.pojo.Product
+import com.salhe.antibigdata.ui.adapter.ProductAdapter
 import com.salhe.antibigdata.utils.SnowFlake
 import com.salhe.antibigdata.work.UploadProductWork
 import dagger.hilt.android.AndroidEntryPoint
@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
 
                 workManager.getWorkInfoByIdLiveData(request.id).observe(this, Observer {
                     when(it.state){
-
+                        
                     }
                 })
             }

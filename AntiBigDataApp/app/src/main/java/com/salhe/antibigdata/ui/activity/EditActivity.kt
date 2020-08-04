@@ -1,4 +1,4 @@
-package com.salhe.antibigdata.activity
+package com.salhe.antibigdata.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package com.salhe.antibigdata.pojo
+package com.salhe.antibigdata.data.pojo
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

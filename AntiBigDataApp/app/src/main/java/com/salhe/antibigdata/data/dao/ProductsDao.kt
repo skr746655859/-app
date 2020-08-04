@@ -1,4 +1,4 @@
-package com.salhe.antibigdata.dao
+package com.salhe.antibigdata.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.salhe.antibigdata.PRODUCTS_TABLE_NAME
-import com.salhe.antibigdata.pojo.Product
+import com.salhe.antibigdata.data.pojo.Product
 
 @Dao
 interface ProductsDao {

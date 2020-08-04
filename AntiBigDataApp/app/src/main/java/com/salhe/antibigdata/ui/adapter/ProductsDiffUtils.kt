@@ -1,7 +1,7 @@
-package com.salhe.antibigdata.adapter
+package com.salhe.antibigdata.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.salhe.antibigdata.pojo.Product
+import com.salhe.antibigdata.data.pojo.Product
 
 class ProductsDiffUtils(
     private val oldProducts: List<Product>,

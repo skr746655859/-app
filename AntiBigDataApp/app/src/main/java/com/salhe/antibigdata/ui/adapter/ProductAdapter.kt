@@ -1,4 +1,4 @@
-package com.salhe.antibigdata.adapter
+package com.salhe.antibigdata.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.salhe.antibigdata.R
-import com.salhe.antibigdata.pojo.DataState
-import com.salhe.antibigdata.pojo.Product
+import com.salhe.antibigdata.data.pojo.DataState
+import com.salhe.antibigdata.data.pojo.Product
 import kotlinx.android.synthetic.main.item_product.view.*
 
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.InnerHolder>() {
