@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.salhe.antibigdata.Key
@@ -90,18 +91,30 @@ class MainActivity : AppCompatActivity() {
 
     fun uploadAllData(v: View) {
         val workManager = WorkManager.getInstance(this)
-        allProducts.value?.forEach {
-            if (it.state != DataState.uploaded) {
-                val data = workDataOf(Key.ID to it.id)
+        allProducts.value?.forEach { product ->
+            if (product.state != DataState.uploaded) {
+                val data = workDataOf(Key.ID to product.id)
                 val request = OneTimeWorkRequestBuilder<UploadProductWork>()
                     .setInputData(data)
                     .build()
                 workManager.enqueue(request)
 
-                workManager.getWorkInfoByIdLiveData(request.id).observe(this, Observer {
-                    when(it.state){
-                        
+                workManager.getWorkInfoByIdLiveData(request.id).observe(this, Observer { workInfo ->
+                    val state = when (workInfo.state) {
+                        WorkInfo.State.RUNNING -> DataState.uploading
+                        WorkInfo.State.FAILED -> DataState.failed
+                        WorkInfo.State.SUCCEEDED -> DataState.uploaded
+                        else -> DataState.wait
                     }
+                    val productNew = Product(
+                        product.id,
+                        product.name,
+                        product.price,
+                        product.priceMax,
+                        product.priceBeforeDiscount,
+                        state
+                    )
+                    productsDao.insertAll(productNew)
                 })
             }
         }
