@@ -25,7 +25,7 @@ public class Product {
     private Float priceBeforeDiscount;
     private String source;
     private String url;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "Asia/Shanghai",pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp time;
     private String platform;
     private String deviceId;
