@@ -180,4 +180,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
     }
 
+    fun deleteAllData(v: View){
+        productsDao.deleteAll()
+    }
+
 }

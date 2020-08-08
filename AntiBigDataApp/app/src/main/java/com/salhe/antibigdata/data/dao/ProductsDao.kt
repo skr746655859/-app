@@ -32,5 +32,8 @@ interface ProductsDao {
 
     @Query("UPDATE $PRODUCTS_TABLE_NAME SET state=:newState WHERE id = :id")
     fun updateStateById(id: Long, newState: DataState)
+    
+    @Query("DELETE FROM $PRODUCTS_TABLE_NAME")
+    fun deleteAll()
 
 }
