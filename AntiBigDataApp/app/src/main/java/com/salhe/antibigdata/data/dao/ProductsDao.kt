@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.salhe.antibigdata.PRODUCTS_TABLE_NAME
+import com.salhe.antibigdata.data.pojo.DataState
 import com.salhe.antibigdata.data.pojo.Product
 
 @Dao
@@ -28,5 +29,8 @@ interface ProductsDao {
 
     @Query("SELECT COUNT(*) FROM $PRODUCTS_TABLE_NAME")
     fun countProducts(): Int
+
+    @Query("UPDATE $PRODUCTS_TABLE_NAME SET state=:newState WHERE id = :id")
+    fun updateStateById(id: Long, newState: DataState)
 
 }
