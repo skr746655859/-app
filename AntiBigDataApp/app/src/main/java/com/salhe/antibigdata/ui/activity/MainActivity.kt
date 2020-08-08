@@ -1,8 +1,17 @@
 package com.salhe.antibigdata.ui.activity
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +31,7 @@ import com.salhe.antibigdata.work.UploadProductWork
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
@@ -122,20 +132,28 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             Product(
                 snowFlake.nextId(),
                 "【一元拍卖】Huawei/华为Nova 7 SE 5G新品手机 8+128GB 银月星辉",
-                2751.00f
+                2751.00f,
+                source = "taobao",
+                deviceId = deviceId
             ),
             // 波动价格的商品
             Product(
                 snowFlake.nextId(),
                 "HUAWEI P40 Pro 5G新款手机官方旗舰店mate30pro5g版正品华为p40pro直降p30",
-                4188.00f
-            ).withRange(7388.00f),
+                4188.00f,
+                priceMax = 7388.00f,
+                source = "taobao",
+                deviceId = deviceId
+            ),
             // 打折商品
             Product(
                 snowFlake.nextId(),
                 "休闲裤男长裤夏季薄款抽绳九分裤束脚宽松裤子韩版潮流速干运动裤",
-                58.00f
-            ).withDiscount(168.00f)
+                58.00f,
+                priceBeforeDiscount = 168.00f,
+                source = "taobao",
+                deviceId = deviceId
+            )
         )
     }
 
@@ -156,15 +174,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                         WorkInfo.State.SUCCEEDED -> DataState.uploaded
                         else -> DataState.wait
                     }
-                    val productNew = Product(
-                        product.id,
-                        product.name,
-                        product.price,
-                        product.priceMax,
-                        product.priceBeforeDiscount,
-                        state
-                    )
-                    productsDao.insertAll(productNew)
+                    productsDao.updateStateById(product.id, state)
                 })
             }
         }
