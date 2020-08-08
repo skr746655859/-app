@@ -51,6 +51,11 @@ class ProductConverters {
  * @property price 默认为商品固定价格
  * @property priceMax 商品最高价格（若此字段不为null，则认为price是价格下限）
  * @property priceBeforeDiscount 商品折前价格（若此字段不为null，则认为price是折后价）
+ * @property source 数据来源，比如taobao, taobao-web, jd, jd-web
+ * @property url 相关URL
+ * @property time 数据参考时间
+ * @property platform 操作系统，如android，ios，macOS，Windows
+ * @property deviceId 设备ID
  * @property state 数据上传状态
  */
 @Entity(tableName = PRODUCTS_TABLE_NAME)
