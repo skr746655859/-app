@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: jdbc:mysql://salheli.com:3307/anti_big_data?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://salheli.com:3307/anti_big_data?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: antibigdatasalhe
