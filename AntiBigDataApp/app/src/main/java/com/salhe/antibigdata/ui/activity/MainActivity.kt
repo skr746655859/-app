@@ -27,7 +27,7 @@ import com.salhe.antibigdata.data.pojo.DataState
 import com.salhe.antibigdata.data.pojo.Product
 import com.salhe.antibigdata.ui.adapter.ProductAdapter
 import com.salhe.antibigdata.utils.SnowFlake
-import com.salhe.antibigdata.work.UploadProductWork
+import com.salhe.antibigdata.work.UploadProductWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         allProducts.value?.forEach { product ->
             if (product.state != DataState.uploaded) {
                 val data = workDataOf(Key.ID to product.id)
-                val request = OneTimeWorkRequestBuilder<UploadProductWork>()
+                val request = OneTimeWorkRequestBuilder<UploadProductWorker>()
                     .setInputData(data)
                     .build()
                 workManager.enqueue(request)

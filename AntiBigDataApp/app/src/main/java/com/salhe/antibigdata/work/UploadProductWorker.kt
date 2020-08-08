@@ -13,7 +13,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.components.ApplicationComponent
 
-class UploadProductWork(context: Context, workerParams: WorkerParameters) : Worker(
+class UploadProductWorker(context: Context, workerParams: WorkerParameters) : Worker(
     context,
     workerParams
 ) {
