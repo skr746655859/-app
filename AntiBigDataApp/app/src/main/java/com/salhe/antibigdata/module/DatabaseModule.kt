@@ -2,7 +2,7 @@ package com.salhe.antibigdata.module
 
 import android.content.Context
 import androidx.room.Room
-import com.google.gson.GsonBuilder
+import com.google.gson.*
 import com.salhe.antibigdata.data.dao.ProductsDao
 import com.salhe.antibigdata.data.database.ProductsDatabase
 import com.salhe.antibigdata.service.ProductRemoteService
@@ -14,6 +14,11 @@ import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.reflect.Type
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 @Module
 @InstallIn(ApplicationComponent::class)
@@ -42,7 +47,37 @@ object DatabaseModule {
 
     @Provides
     fun provideRetrofit(): Retrofit {
-        val gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()
+        val typeAdapter = object : JsonSerializer<Date>, JsonDeserializer<Date> {
+
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").also {
+                it.timeZone = TimeZone.getTimeZone("Asia/Shanghai")
+            }
+
+            override fun serialize(
+                src: Date?,
+                typeOfSrc: Type?,
+                context: JsonSerializationContext?
+            ): JsonElement {
+                return JsonPrimitive(dateFormat.format(src))
+            }
+
+            override fun deserialize(
+                json: JsonElement?,
+                typeOfT: Type?,
+                context: JsonDeserializationContext?
+            ): Date {
+                return try {
+                    dateFormat.parse(json?.getAsString())
+                } catch (e: ParseException) {
+                    throw JsonParseException(e)
+                }
+            }
+        }
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .registerTypeAdapter(Date::class.java, typeAdapter)
+            .create()
+
         return Retrofit.Builder()
             .baseUrl("http://www.salheli.com:2021/")
             .addConverterFactory(GsonConverterFactory.create(gson))
