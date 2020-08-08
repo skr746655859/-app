@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
     // DI
     @Inject
@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     // Data
     lateinit var allProducts: LiveData<List<Product>>
+    lateinit var deviceId: String
 
     // View
     private lateinit var productAdapter: ProductAdapter
@@ -49,7 +50,56 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    val REQUEST_READ_PHONE_STATE = 1
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            REQUEST_READ_PHONE_STATE -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                deviceId = getDeviceId(this)
+            } else {
+                Toast.makeText(this, "权限已被用户拒绝", Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+            }
+        }
+    }
+
+    @SuppressLint("HardwareIds")
+    fun getDeviceId(context: Context): String {
+        var deviceId = ""
+        val tm =
+            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_PHONE_STATE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                (context as Activity),
+                arrayOf(Manifest.permission.READ_PHONE_STATE),
+                REQUEST_READ_PHONE_STATE
+            )
+        } else {
+            deviceId = if (tm.deviceId != null) {
+                tm.deviceId
+            } else {
+                Settings.Secure.getString(
+                    context.getApplicationContext().getContentResolver(),
+                    Settings.Secure.ANDROID_ID
+                )
+            }
+        }
+        return deviceId
+    }
+
+
     private fun initData() {
+        deviceId = getDeviceId(this)
+
         allProducts = productsDao.loadAllProductsLiveData()
     }
 
