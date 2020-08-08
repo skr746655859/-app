@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.salhe.antibigdata.PRODUCTS_TABLE_NAME
+import java.util.*
 
 /**
  * wait 数据等待上传
@@ -30,6 +31,16 @@ class ProductConverters {
         else null
     }
 
+    @TypeConverter
+    fun fromDate(date: Date): Long {
+        return date.time
+    }
+
+    @TypeConverter
+    fun toDate(time: Long): Date {
+        return Date(time)
+    }
+
 }
 
 /**
@@ -47,19 +58,15 @@ data class Product(
     @PrimaryKey val id: Long,
     val name: String,
     val price: Float,
-    @ColumnInfo(name = "price_max") var priceMax: Float? = null,
-    @ColumnInfo(name = "price_before_discount") var priceBeforeDiscount: Float? = null,
+    @ColumnInfo(name = "price_max")
+    val priceMax: Float? = null,
+    @ColumnInfo(name = "price_before_discount")
+    val priceBeforeDiscount: Float? = null,
+    val source: String = "",
+    val url: String? = null,
+    val time: Date = Date(),
+    val platform: String = "android",
+    @ColumnInfo(name="device_id")
+    val deviceId: String = "",
     val state: DataState = DataState.wait
-) {
-
-    fun withDiscount(priceBeforeDiscount: Float): Product {
-        this.priceBeforeDiscount = priceBeforeDiscount
-        return this
-    }
-
-    fun withRange(priceMax: Float?): Product {
-        this.priceMax = priceMax
-        return this
-    }
-
-}
+)
