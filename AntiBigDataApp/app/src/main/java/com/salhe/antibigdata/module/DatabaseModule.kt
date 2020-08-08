@@ -2,6 +2,7 @@ package com.salhe.antibigdata.module
 
 import android.content.Context
 import androidx.room.Room
+import com.google.gson.GsonBuilder
 import com.salhe.antibigdata.data.dao.ProductsDao
 import com.salhe.antibigdata.data.database.ProductsDatabase
 import com.salhe.antibigdata.service.ProductRemoteService
@@ -41,9 +42,10 @@ object DatabaseModule {
 
     @Provides
     fun provideRetrofit(): Retrofit {
+        val gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()
         return Retrofit.Builder()
             .baseUrl("http://www.salheli.com:2021/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
     }
 
