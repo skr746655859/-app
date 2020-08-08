@@ -9,10 +9,13 @@ import com.salhe.antibigdata.R
 import com.salhe.antibigdata.data.pojo.DataState
 import com.salhe.antibigdata.data.pojo.Product
 import kotlinx.android.synthetic.main.item_product.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.InnerHolder>() {
 
     private val products = mutableListOf<Product>()
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINESE)
 
     inner class InnerHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -41,6 +44,11 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.InnerHolder>() {
             } else {
                 priceTextView.text = "固定价：${product.price}"
             }
+
+            sourceTextView.text = product.source
+            urlTextView.text = if (product.url.isNullOrEmpty()) "NO URL" else product.url
+            timeTextView.text = dateFormat.format(product.time)
+
         }
     }
 
