@@ -7,10 +7,16 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
+import com.salhe.antibigdata.Key;
 import com.salhe.antibigdata.data.dao.ProductsDao;
 import com.salhe.antibigdata.data.pojo.DataState;
 import com.salhe.antibigdata.data.pojo.Product;
 import com.salhe.antibigdata.utils.SnowFlake;
+import com.salhe.antibigdata.work.UploadProductWorker;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -188,6 +194,14 @@ public class CollectProductAccessibilityService extends AccessibilityService {
                             );
                         }
                         productsDao.insertAll(product);
+                        Data data = new Data.Builder()
+                                .putLong(Key.ID, product.getId())   // Product的ID
+                                .build();
+                        WorkManager workManager = WorkManager.getInstance(this);
+                        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(UploadProductWorker.class)
+                                .setInputData(data)
+                                .build();
+                        workManager.enqueue(request);
 
                         array.put(object);
                         obj.put("Capture", array);//需要上传的json对象
