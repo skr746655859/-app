@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">AntiBigData</string>
+
     <string name="add_test_data">添加测试数据</string>
     <string name="upload_data">上传数据</string>
     <string name="delete_all_data">清除数据</string>
+
+    <string name="collect_product_accessibility_description">收集淘宝等购物应用的商品价格信息，用于检测“大数据杀熟”</string>
 </resources>
