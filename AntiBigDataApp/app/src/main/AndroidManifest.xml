@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.activity.AboutActivity"
+            android:theme="@style/AppTheme.NoActionBarFullScreen" />
+        <activity
             android:name=".ui.activity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBarFullScreen">
             <intent-filter>

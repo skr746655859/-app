@@ -15,12 +15,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun viewProducts(v: View) {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     fun viewUserPolicy(v: View) {
-
+        startActivity(Intent(this, AboutActivity::class.java))
     }
 
     fun openAccessibilityService(v: View) {
