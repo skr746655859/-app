@@ -6,6 +6,7 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.salhe.antibigdata.Key
 import com.salhe.antibigdata.data.dao.ProductsDao
+import com.salhe.antibigdata.data.pojo.DataState
 import com.salhe.antibigdata.service.ApiResult
 import com.salhe.antibigdata.service.ProductRemoteService
 import dagger.hilt.EntryPoint
@@ -39,6 +40,7 @@ class UploadProductWorker(context: Context, workerParams: WorkerParameters) : Wo
         )
         val productsDao = uploadWorkEntryPoint.productsDao()
         val productRemoteService = uploadWorkEntryPoint.productRemoteService()
+        productsDao.updateStateById(id, DataState.uploading)
 
         // 获得产品信息
         val product = productsDao.loadProductById(id)
@@ -47,10 +49,14 @@ class UploadProductWorker(context: Context, workerParams: WorkerParameters) : Wo
             .execute()
         if (response.isSuccessful) {
             val result = response.body()!!
-            if (result.code == ApiResult.SUCCESS)
+            if (result.code == ApiResult.SUCCESS) {
+                productsDao.updateStateById(id, DataState.uploaded)
                 return Result.success(workDataOf(Key.MSG to result.msg))
+            }
+            productsDao.updateStateById(id, DataState.failed)
             return Result.failure(workDataOf(Key.MSG to result.msg))
         } else {
+            productsDao.updateStateById(id, DataState.failed)
             return Result.failure(workDataOf(Key.MSG to "网络请求错误"))
         }
 

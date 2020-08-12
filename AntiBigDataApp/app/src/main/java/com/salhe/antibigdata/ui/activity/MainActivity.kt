@@ -17,7 +17,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.salhe.antibigdata.Key
@@ -168,13 +167,13 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 workManager.enqueue(request)
 
                 workManager.getWorkInfoByIdLiveData(request.id).observe(this, Observer { workInfo ->
-                    val state = when (workInfo.state) {
-                        WorkInfo.State.RUNNING -> DataState.uploading
-                        WorkInfo.State.FAILED -> DataState.failed
-                        WorkInfo.State.SUCCEEDED -> DataState.uploaded
-                        else -> DataState.wait
-                    }
-                    productsDao.updateStateById(product.id, state)
+                    // val state = when (workInfo.state) {
+                    //     WorkInfo.State.RUNNING -> DataState.uploading
+                    //     WorkInfo.State.FAILED -> DataState.failed
+                    //     WorkInfo.State.SUCCEEDED -> DataState.uploaded
+                    //     else -> DataState.wait
+                    // }
+                    // productsDao.updateStateById(product.id, state)
                 })
             }
         }
